@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "text": "అమరావతి లో నూతన ఐటీ కేంద్రాన్ని ప్రారంభించిన ముఖ్యమంత్రి. వేలాది మందికి ఉద్యోగావకాశాలు.",
+    "priority": 3,
+    "active": true,
+    "startTime": null,
+    "expirationTime": null,
+    "createdAt": "2026-08-08T16:57:37.825Z",
+    "updatedAt": "2026-08-08T16:57:37.825Z"
+  },
+  {
+    "id": 2,
+    "text": "భారత క్రీడాకారుడికి ప్రపంచ అథ్లెటిక్స్ లో స్వర్ణ పతకం సాధన - రాష్ట్రపతి అభినందనలు.",
+    "priority": 2,
+    "active": true,
+    "startTime": null,
+    "expirationTime": null,
+    "createdAt": "2026-08-08T16:57:37.825Z",
+    "updatedAt": "2026-08-08T16:57:37.825Z"
+  }
+]

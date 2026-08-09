@@ -1,0 +1,234 @@
+[
+  {
+    "id": 1,
+    "timestamp": "2026-08-08T17:05:59.583Z",
+    "action": "INSERT",
+    "table": "users",
+    "recordId": 1,
+    "user": "system"
+  },
+  {
+    "id": 2,
+    "timestamp": "2026-08-08T17:05:59.588Z",
+    "action": "INSERT",
+    "table": "users",
+    "recordId": 2,
+    "user": "system"
+  },
+  {
+    "id": 3,
+    "timestamp": "2026-08-08T17:05:59.591Z",
+    "action": "INSERT",
+    "table": "users",
+    "recordId": 3,
+    "user": "system"
+  },
+  {
+    "id": 4,
+    "timestamp": "2026-08-08T17:05:59.596Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 1,
+    "user": "system"
+  },
+  {
+    "id": 5,
+    "timestamp": "2026-08-08T17:05:59.599Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 2,
+    "user": "system"
+  },
+  {
+    "id": 6,
+    "timestamp": "2026-08-08T17:05:59.602Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 3,
+    "user": "system"
+  },
+  {
+    "id": 7,
+    "timestamp": "2026-08-08T17:05:59.606Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 4,
+    "user": "system"
+  },
+  {
+    "id": 8,
+    "timestamp": "2026-08-08T17:05:59.608Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 5,
+    "user": "system"
+  },
+  {
+    "id": 9,
+    "timestamp": "2026-08-08T17:05:59.613Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 6,
+    "user": "system"
+  },
+  {
+    "id": 10,
+    "timestamp": "2026-08-08T17:05:59.616Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 7,
+    "user": "system"
+  },
+  {
+    "id": 11,
+    "timestamp": "2026-08-08T17:05:59.619Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 8,
+    "user": "system"
+  },
+  {
+    "id": 12,
+    "timestamp": "2026-08-08T17:05:59.622Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 9,
+    "user": "system"
+  },
+  {
+    "id": 13,
+    "timestamp": "2026-08-08T17:05:59.625Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 10,
+    "user": "system"
+  },
+  {
+    "id": 14,
+    "timestamp": "2026-08-08T17:05:59.629Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 11,
+    "user": "system"
+  },
+  {
+    "id": 15,
+    "timestamp": "2026-08-08T17:05:59.632Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 12,
+    "user": "system"
+  },
+  {
+    "id": 16,
+    "timestamp": "2026-08-08T17:05:59.639Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 13,
+    "user": "system"
+  },
+  {
+    "id": 17,
+    "timestamp": "2026-08-08T17:05:59.642Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 14,
+    "user": "system"
+  },
+  {
+    "id": 18,
+    "timestamp": "2026-08-08T17:05:59.645Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 15,
+    "user": "system"
+  },
+  {
+    "id": 19,
+    "timestamp": "2026-08-08T17:05:59.649Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 16,
+    "user": "system"
+  },
+  {
+    "id": 20,
+    "timestamp": "2026-08-08T17:05:59.652Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 17,
+    "user": "system"
+  },
+  {
+    "id": 21,
+    "timestamp": "2026-08-08T17:05:59.655Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 18,
+    "user": "system"
+  },
+  {
+    "id": 22,
+    "timestamp": "2026-08-08T17:05:59.658Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 19,
+    "user": "system"
+  },
+  {
+    "id": 23,
+    "timestamp": "2026-08-08T17:05:59.661Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 20,
+    "user": "system"
+  },
+  {
+    "id": 24,
+    "timestamp": "2026-08-08T17:05:59.664Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 21,
+    "user": "system"
+  },
+  {
+    "id": 25,
+    "timestamp": "2026-08-08T17:05:59.668Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 22,
+    "user": "system"
+  },
+  {
+    "id": 26,
+    "timestamp": "2026-08-08T17:05:59.671Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 23,
+    "user": "system"
+  },
+  {
+    "id": 27,
+    "timestamp": "2026-08-08T17:05:59.674Z",
+    "action": "INSERT",
+    "table": "categories",
+    "recordId": 24,
+    "user": "system"
+  },
+  {
+    "id": 28,
+    "timestamp": "2026-08-08T17:10:33.749Z",
+    "action": "UPDATE",
+    "table": "articles",
+    "recordId": 2,
+    "user": "viewer"
+  },
+  {
+    "id": 29,
+    "timestamp": "2026-08-08T17:10:33.789Z",
+    "action": "UPDATE",
+    "table": "articles",
+    "recordId": 2,
+    "user": "viewer"
+  }
+]

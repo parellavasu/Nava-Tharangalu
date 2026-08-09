@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "createdAt": "2026-08-08T17:05:59.580Z",
+    "updatedAt": "2026-08-08T17:05:59.581Z",
+    "username": "admin",
+    "password": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9",
+    "name": "Super Admin",
+    "role": "Super Admin"
+  },
+  {
+    "id": 2,
+    "createdAt": "2026-08-08T17:05:59.585Z",
+    "updatedAt": "2026-08-08T17:05:59.585Z",
+    "username": "editor",
+    "password": "ef5e5a1fb95055e0e56cccf98a41e784a132c14e7f6e1ba244302f0e72b29baf",
+    "name": "Editor In-Chief",
+    "role": "Editor"
+  },
+  {
+    "id": 3,
+    "createdAt": "2026-08-08T17:05:59.589Z",
+    "updatedAt": "2026-08-08T17:05:59.589Z",
+    "username": "reporter",
+    "password": "5425d6707b807e1b4775d67b8a95391407feccccf7d8fb670486c269119a5114",
+    "name": "Reporter Amaravati",
+    "role": "Reporter"
+  }
+]

@@ -1,0 +1,194 @@
+[
+  {
+    "id": 1,
+    "createdAt": "2026-08-08T17:05:59.595Z",
+    "updatedAt": "2026-08-08T17:05:59.595Z",
+    "name": "ఆంధ్రప్రదేశ్",
+    "slug": "andhra-pradesh",
+    "parent": null
+  },
+  {
+    "id": 2,
+    "createdAt": "2026-08-08T17:05:59.598Z",
+    "updatedAt": "2026-08-08T17:05:59.598Z",
+    "name": "తెలంగాణ",
+    "slug": "telangana",
+    "parent": null
+  },
+  {
+    "id": 3,
+    "createdAt": "2026-08-08T17:05:59.601Z",
+    "updatedAt": "2026-08-08T17:05:59.601Z",
+    "name": "జాతీయం",
+    "slug": "national",
+    "parent": null
+  },
+  {
+    "id": 4,
+    "createdAt": "2026-08-08T17:05:59.604Z",
+    "updatedAt": "2026-08-08T17:05:59.604Z",
+    "name": "అంతర్జాతీయం",
+    "slug": "international",
+    "parent": null
+  },
+  {
+    "id": 5,
+    "createdAt": "2026-08-08T17:05:59.607Z",
+    "updatedAt": "2026-08-08T17:05:59.607Z",
+    "name": "రాజకీయాలు",
+    "slug": "politics",
+    "parent": null
+  },
+  {
+    "id": 6,
+    "createdAt": "2026-08-08T17:05:59.611Z",
+    "updatedAt": "2026-08-08T17:05:59.611Z",
+    "name": "సినిమా",
+    "slug": "cinema",
+    "parent": null
+  },
+  {
+    "id": 7,
+    "createdAt": "2026-08-08T17:05:59.615Z",
+    "updatedAt": "2026-08-08T17:05:59.615Z",
+    "name": "క్రీడలు",
+    "slug": "sports",
+    "parent": null
+  },
+  {
+    "id": 8,
+    "createdAt": "2026-08-08T17:05:59.618Z",
+    "updatedAt": "2026-08-08T17:05:59.618Z",
+    "name": "వ్యాపారం",
+    "slug": "business",
+    "parent": null
+  },
+  {
+    "id": 9,
+    "createdAt": "2026-08-08T17:05:59.621Z",
+    "updatedAt": "2026-08-08T17:05:59.621Z",
+    "name": "టెక్నాలజీ",
+    "slug": "technology",
+    "parent": null
+  },
+  {
+    "id": 10,
+    "createdAt": "2026-08-08T17:05:59.623Z",
+    "updatedAt": "2026-08-08T17:05:59.623Z",
+    "name": "విద్య",
+    "slug": "education",
+    "parent": null
+  },
+  {
+    "id": 11,
+    "createdAt": "2026-08-08T17:05:59.627Z",
+    "updatedAt": "2026-08-08T17:05:59.627Z",
+    "name": "ఆరోగ్యం",
+    "slug": "health",
+    "parent": null
+  },
+  {
+    "id": 12,
+    "createdAt": "2026-08-08T17:05:59.631Z",
+    "updatedAt": "2026-08-08T17:05:59.631Z",
+    "name": "వ్యవసాయం",
+    "slug": "agriculture",
+    "parent": null
+  },
+  {
+    "id": 13,
+    "createdAt": "2026-08-08T17:05:59.634Z",
+    "updatedAt": "2026-08-08T17:05:59.634Z",
+    "name": "జీవనశైలి",
+    "slug": "lifestyle",
+    "parent": null
+  },
+  {
+    "id": 14,
+    "createdAt": "2026-08-08T17:05:59.641Z",
+    "updatedAt": "2026-08-08T17:05:59.641Z",
+    "name": "రాశిఫలాలు",
+    "slug": "astrology",
+    "parent": null
+  },
+  {
+    "id": 15,
+    "createdAt": "2026-08-08T17:05:59.643Z",
+    "updatedAt": "2026-08-08T17:05:59.643Z",
+    "name": "అమరావతి",
+    "slug": "amaravati",
+    "parent": "andhra-pradesh"
+  },
+  {
+    "id": 16,
+    "createdAt": "2026-08-08T17:05:59.647Z",
+    "updatedAt": "2026-08-08T17:05:59.647Z",
+    "name": "విశాఖపట్నం",
+    "slug": "visakhapatnam",
+    "parent": "andhra-pradesh"
+  },
+  {
+    "id": 17,
+    "createdAt": "2026-08-08T17:05:59.650Z",
+    "updatedAt": "2026-08-08T17:05:59.650Z",
+    "name": "విజయవాడ",
+    "slug": "vijayawada",
+    "parent": "andhra-pradesh"
+  },
+  {
+    "id": 18,
+    "createdAt": "2026-08-08T17:05:59.653Z",
+    "updatedAt": "2026-08-08T17:05:59.653Z",
+    "name": "తిరుపతి",
+    "slug": "tirupati",
+    "parent": "andhra-pradesh"
+  },
+  {
+    "id": 19,
+    "createdAt": "2026-08-08T17:05:59.656Z",
+    "updatedAt": "2026-08-08T17:05:59.656Z",
+    "name": "గుంటూరు",
+    "slug": "guntur",
+    "parent": "andhra-pradesh"
+  },
+  {
+    "id": 20,
+    "createdAt": "2026-08-08T17:05:59.659Z",
+    "updatedAt": "2026-08-08T17:05:59.659Z",
+    "name": "హైదరాబాద్",
+    "slug": "hyderabad",
+    "parent": "telangana"
+  },
+  {
+    "id": 21,
+    "createdAt": "2026-08-08T17:05:59.663Z",
+    "updatedAt": "2026-08-08T17:05:59.663Z",
+    "name": "వరంగల్",
+    "slug": "warangal",
+    "parent": "telangana"
+  },
+  {
+    "id": 22,
+    "createdAt": "2026-08-08T17:05:59.665Z",
+    "updatedAt": "2026-08-08T17:05:59.665Z",
+    "name": "కరీంనగర్",
+    "slug": "karimnagar",
+    "parent": "telangana"
+  },
+  {
+    "id": 23,
+    "createdAt": "2026-08-08T17:05:59.670Z",
+    "updatedAt": "2026-08-08T17:05:59.670Z",
+    "name": "నిజామాబాద్",
+    "slug": "nizamabad",
+    "parent": "telangana"
+  },
+  {
+    "id": 24,
+    "createdAt": "2026-08-08T17:05:59.672Z",
+    "updatedAt": "2026-08-08T17:05:59.672Z",
+    "name": "ఖమ్మం",
+    "slug": "khammam",
+    "parent": "telangana"
+  }
+]

@@ -1,0 +1,22 @@
+# Dependency directory (Never commit this to git)
+node_modules/
+
+# Production build outputs
+dist/
+dist-ssr/
+*.local
+
+# Local database uploads and backup archives
+public/uploads/*
+!public/uploads/.gitkeep
+backend/backups/*
+!backend/backups/.gitkeep
+
+# System and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.agents/
+.gemini/
+*.log
