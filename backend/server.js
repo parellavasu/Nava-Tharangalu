@@ -4,7 +4,7 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import db from './db.js';
-import { authenticate, loginUser, logoutUser, requireRole } from './auth.js';
+import { authenticate, loginUser, logoutUser, requireRole, hashPassword } from './auth.js';
 import { createBackup, listBackups, verifyBackup, restoreBackup } from './backup.js';
 
 const app = express();
@@ -62,6 +62,29 @@ app.post('/api/auth/login', (req, res) => {
   res.json(session);
 });
 
+app.post('/api/auth/register', (req, res) => {
+  const { username, password, name, securityQuestion, securityAnswer, role = 'Super Admin' } = req.body;
+  if (!username || !password || !name || !securityQuestion || !securityAnswer) {
+    return res.status(400).json({ error: 'అన్ని వివరాలు పూరించడం తప్పనిసరి' });
+  }
+
+  const formattedUsername = username.toLowerCase().trim();
+  if (db.findOne('users', { username: formattedUsername })) {
+    return res.status(400).json({ error: 'ఈ యూజర్ పేరుతో ఇప్పటికే ఒక ఖాతా ఉంది' });
+  }
+
+  db.insert('users', {
+    username: formattedUsername,
+    password: hashPassword(password),
+    name: name.trim(),
+    role,
+    securityQuestion: securityQuestion.trim(),
+    securityAnswer: hashPassword(securityAnswer.toLowerCase().trim())
+  });
+
+  res.status(201).json({ success: true, message: 'అడ్మిన్ రిజిస్ట్రేషన్ విజయవంతమైంది!' });
+});
+
 app.post('/api/auth/logout', (req, res) => {
   const authHeader = req.headers.authorization;
   if (authHeader && authHeader.startsWith('Bearer ')) {
@@ -76,6 +99,129 @@ app.get('/api/auth/me', (req, res) => {
     return res.status(401).json({ error: 'లాగిన్ అవ్వలేదు' });
   }
   res.json({ user: req.user });
+});
+
+// ================= USER PROFILE MANAGEMENT =================
+
+// Public forgot password request: fetch security question
+app.post('/api/auth/forgot-password', (req, res) => {
+  const { username } = req.body;
+  if (!username) {
+    return res.status(400).json({ error: 'యూజర్ పేరు అవసరం' });
+  }
+  const user = db.findOne('users', { username: username.toLowerCase().trim() });
+  if (!user) {
+    return res.status(404).json({ error: 'యూజర్ కనుగొనబడలేదు' });
+  }
+  res.json({ question: user.securityQuestion || 'మీ మొదటి పాఠశాల పేరు?' });
+});
+
+// Public forgot password reset: verify answer and reset
+app.post('/api/auth/reset-password', (req, res) => {
+  const { username, answer, newPassword } = req.body;
+  if (!username || !answer || !newPassword) {
+    return res.status(400).json({ error: 'అన్ని వివరాలు పూరించండి' });
+  }
+  const user = db.findOne('users', { username: username.toLowerCase().trim() });
+  if (!user) {
+    return res.status(404).json({ error: 'యూజర్ కనుగొనబడలేదు' });
+  }
+
+  const hashedAnswer = hashPassword(answer.toLowerCase().trim());
+  if (user.securityAnswer !== hashedAnswer) {
+    return res.status(401).json({ error: 'తప్పు సమాధానం! దయచేసి మళ్ళీ ప్రయత్నించండి.' });
+  }
+
+  // Update password in DB
+  const hashedNewPassword = hashPassword(newPassword);
+  db.update('users', user.id, { password: hashedNewPassword }, 'system-reset');
+
+  res.json({ success: true, message: 'పాస్‌వర్డ్ విజయవంతంగా రీసెట్ చేయబడింది!' });
+});
+
+// Admin User list (exclude passwords and security answers)
+app.get('/api/users', requireRole(['Super Admin']), (req, res) => {
+  const list = db.read('users').map(u => ({
+    id: u.id,
+    username: u.username,
+    name: u.name,
+    role: u.role,
+    securityQuestion: u.securityQuestion || 'మీ మొదటి పాఠశాల పేరు?',
+    createdAt: u.createdAt,
+    updatedAt: u.updatedAt
+  }));
+  res.json(list);
+});
+
+// Admin User create
+app.post('/api/users', requireRole(['Super Admin']), (req, res) => {
+  const { username, password, name, role, securityQuestion, securityAnswer } = req.body;
+  if (!username || !password || !name || !role || !securityQuestion || !securityAnswer) {
+    return res.status(400).json({ error: 'అన్ని వివరాలు పూరించడం తప్పనిసరి' });
+  }
+
+  const formattedUsername = username.toLowerCase().trim();
+  if (db.findOne('users', { username: formattedUsername })) {
+    return res.status(400).json({ error: 'ఈ యూజర్ పేరుతో ఇప్పటికే ఒక ఖాతా ఉంది' });
+  }
+
+  const newUser = db.insert('users', {
+    username: formattedUsername,
+    password: hashPassword(password),
+    name: name.trim(),
+    role,
+    securityQuestion: securityQuestion.trim(),
+    securityAnswer: hashPassword(securityAnswer.toLowerCase().trim())
+  });
+
+  res.status(201).json({
+    id: newUser.id,
+    username: newUser.username,
+    name: newUser.name,
+    role: newUser.role
+  });
+});
+
+// Admin User update
+app.put('/api/users/:id', requireRole(['Super Admin']), (req, res) => {
+  const id = Number(req.params.id);
+  const user = db.findOne('users', { id });
+  if (!user) {
+    return res.status(404).json({ error: 'యూజర్ కనుగొనబడలేదు' });
+  }
+
+  const { name, role, password, securityQuestion, securityAnswer } = req.body;
+  const updates = {};
+  if (name !== undefined) updates.name = name.trim();
+  if (role !== undefined) updates.role = role;
+  if (password) updates.password = hashPassword(password);
+  if (securityQuestion !== undefined) updates.securityQuestion = securityQuestion.trim();
+  if (securityAnswer) updates.securityAnswer = hashPassword(securityAnswer.toLowerCase().trim());
+
+  const updated = db.update('users', id, updates, req.user.username);
+  res.json({
+    id: updated.id,
+    username: updated.username,
+    name: updated.name,
+    role: updated.role
+  });
+});
+
+// Admin User delete
+app.delete('/api/users/:id', requireRole(['Super Admin']), (req, res) => {
+  const id = Number(req.params.id);
+  const user = db.findOne('users', { id });
+  if (!user) {
+    return res.status(404).json({ error: 'యూజర్ కనుగొనబడలేదు' });
+  }
+
+  // Prevent self-deletion
+  if (req.user.userId === id) {
+    return res.status(400).json({ error: 'మిమ్మల్ని మీరే తొలగించుకోలేరు' });
+  }
+
+  const success = db.delete('users', id, req.user.username);
+  res.json({ success });
 });
 
 // ================= MEDIA FILE UPLOADS =================

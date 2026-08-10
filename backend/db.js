@@ -167,30 +167,54 @@ const db = {
 
 // Seed default users if users.json is empty or doesn't exist
 const users = db.read('users');
+const hashPassword = (pwd) => crypto.createHash('sha256').update(pwd).digest('hex');
+
 if (users.length === 0) {
   // Passwords: admin123, editor123, reporter123
   // Hashed using SHA-256 for basic security in our demo database
-  const hashPassword = (pwd) => crypto.createHash('sha256').update(pwd).digest('hex');
-
   db.insert('users', {
     username: 'admin',
     password: hashPassword('admin123'),
     name: 'Super Admin',
-    role: 'Super Admin'
+    role: 'Super Admin',
+    securityQuestion: 'మీ మొదటి పాఠశాల పేరు?',
+    securityAnswer: hashPassword('nava')
   });
   db.insert('users', {
     username: 'editor',
     password: hashPassword('editor123'),
     name: 'Editor In-Chief',
-    role: 'Editor'
+    role: 'Editor',
+    securityQuestion: 'మీ మొదటి పాఠశాల పేరు?',
+    securityAnswer: hashPassword('nava')
   });
   db.insert('users', {
     username: 'reporter',
     password: hashPassword('reporter123'),
     name: 'Reporter Amaravati',
-    role: 'Reporter'
+    role: 'Reporter',
+    securityQuestion: 'మీ మొదటి పాఠశాల పేరు?',
+    securityAnswer: hashPassword('nava')
   });
   console.log('Seeded default user accounts.');
+} else {
+  // Migration: Ensure all existing users have security question metadata
+  let updatedAny = false;
+  const migratedUsers = users.map(u => {
+    if (!u.securityQuestion || !u.securityAnswer) {
+      updatedAny = true;
+      return {
+        ...u,
+        securityQuestion: u.securityQuestion || 'మీ మొదటి పాఠశాల పేరు?',
+        securityAnswer: u.securityAnswer || hashPassword('nava')
+      };
+    }
+    return u;
+  });
+  if (updatedAny) {
+    db.write('users', migratedUsers);
+    console.log('Migrated existing user accounts with security questions.');
+  }
 }
 
 // Seed default news categories if categories.json is empty

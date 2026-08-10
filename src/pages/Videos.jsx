@@ -66,9 +66,9 @@ export default function Videos() {
             {/* Embedded Iframe Player */}
             <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', backgroundColor: '#000', borderRadius: 'var(--radius-sm)' }}>
               <iframe 
-                src={selectedVideo.videoUrl.includes('youtube.com') || selectedVideo.videoUrl.includes('youtu.be') 
-                  ? `https://www.youtube.com/embed/${selectedVideo.videoUrl.split('v=')[1] || selectedVideo.videoUrl.split('/').pop()}` 
-                  : selectedVideo.videoUrl
+                src={(selectedVideo.videoUrl || '').includes('youtube.com') || (selectedVideo.videoUrl || '').includes('youtu.be') 
+                  ? `https://www.youtube.com/embed/${(selectedVideo.videoUrl || '').split('v=')[1] || (selectedVideo.videoUrl || '').split('/').pop()}` 
+                  : (selectedVideo.videoUrl || '')
                 }
                 title={selectedVideo.title}
                 frameBorder="0"

@@ -389,9 +389,9 @@ export default function Home() {
             <h4 style={{ marginBottom: '12px', fontSize: '16px', fontWeight: 'bold', paddingRight: '20px' }}>{selectedVideo.title}</h4>
             <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
               <iframe 
-                src={selectedVideo.videoUrl.includes('youtube.com') || selectedVideo.videoUrl.includes('youtu.be') 
-                  ? `https://www.youtube.com/embed/${selectedVideo.videoUrl.split('v=')[1] || selectedVideo.videoUrl.split('/').pop()}` 
-                  : selectedVideo.videoUrl
+                src={(selectedVideo.videoUrl || '').includes('youtube.com') || (selectedVideo.videoUrl || '').includes('youtu.be') 
+                  ? `https://www.youtube.com/embed/${(selectedVideo.videoUrl || '').split('v=')[1] || (selectedVideo.videoUrl || '').split('/').pop()}` 
+                  : (selectedVideo.videoUrl || '')
                 }
                 title={selectedVideo.title}
                 frameBorder="0"

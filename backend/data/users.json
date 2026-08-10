@@ -6,7 +6,9 @@
     "username": "admin",
     "password": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9",
     "name": "Super Admin",
-    "role": "Super Admin"
+    "role": "Super Admin",
+    "securityQuestion": "మీ మొదటి పాఠశాల పేరు?",
+    "securityAnswer": "134371746b7b0167d4fb8d2af820b02d30cb0776fd2314935394849d9d2103aa"
   },
   {
     "id": 2,
@@ -15,7 +17,9 @@
     "username": "editor",
     "password": "ef5e5a1fb95055e0e56cccf98a41e784a132c14e7f6e1ba244302f0e72b29baf",
     "name": "Editor In-Chief",
-    "role": "Editor"
+    "role": "Editor",
+    "securityQuestion": "మీ మొదటి పాఠశాల పేరు?",
+    "securityAnswer": "134371746b7b0167d4fb8d2af820b02d30cb0776fd2314935394849d9d2103aa"
   },
   {
     "id": 3,
@@ -24,6 +28,8 @@
     "username": "reporter",
     "password": "5425d6707b807e1b4775d67b8a95391407feccccf7d8fb670486c269119a5114",
     "name": "Reporter Amaravati",
-    "role": "Reporter"
+    "role": "Reporter",
+    "securityQuestion": "మీ మొదటి పాఠశాల పేరు?",
+    "securityAnswer": "134371746b7b0167d4fb8d2af820b02d30cb0776fd2314935394849d9d2103aa"
   }
 ]

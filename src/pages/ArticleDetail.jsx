@@ -112,7 +112,7 @@ export default function ArticleDetail() {
 
             {/* Body Telugu text */}
             <div className="article-content">
-              {article.content.split('\n').map((paragraph, index) => (
+              {(article.content || '').split('\n').map((paragraph, index) => (
                 paragraph.trim() && <p key={index}>{paragraph}</p>
               ))}
             </div>

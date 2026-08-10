@@ -13,6 +13,11 @@ export default function AdminDashboard({ user }) {
   const [ads, setAds] = useState([]);
   const [backups, setBackups] = useState([]);
   const [auditLogs, setAuditLogs] = useState([]);
+  const [usersList, setUsersList] = useState([]);
+  const [userForm, setUserForm] = useState({
+    username: '', password: '', name: '', role: 'Editor',
+    securityQuestion: 'మీ మొదటి పాఠశాల పేరు?', securityAnswer: ''
+  });
 
   // Stats cards counters
   const [stats, setStats] = useState({ totalArticles: 0, totalViews: 0, activeBreaking: 0, totalAds: 0 });
@@ -107,6 +112,11 @@ export default function AdminDashboard({ user }) {
       fetch('/api/admin/logs', { headers })
         .then(res => res.json())
         .then(data => setAuditLogs(data))
+        .catch(err => console.error(err));
+
+      fetch('/api/users', { headers })
+        .then(res => res.json())
+        .then(data => setUsersList(data))
         .catch(err => console.error(err));
     }
   };
@@ -433,6 +443,91 @@ export default function AdminDashboard({ user }) {
     }
   };
 
+  // User Management Actions
+  const handleEditUser = (u) => {
+    setEditingId(u.id);
+    setUserForm({
+      username: u.username,
+      password: '',
+      name: u.name,
+      role: u.role,
+      securityQuestion: u.securityQuestion || 'మీ మొదటి పాఠశాల పేరు?',
+      securityAnswer: ''
+    });
+    setModalType('user');
+    setUploadProgress('');
+  };
+
+  const handleDeleteUser = async (id) => {
+    if (user.id === id) {
+      alert('మిమ్మల్ని మీరే తొలగించుకోలేరు!');
+      return;
+    }
+    if (!window.confirm('ఈ యూజర్ ఖాతాను తొలగించాలనుకుంటున్నారా?')) return;
+    try {
+      const res = await fetch(`/api/users/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      });
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.error || 'Delete failed');
+      }
+      loadData();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleUserSubmit = async (e) => {
+    e.preventDefault();
+    setUploadProgress('సేవ్ చేస్తోంది...');
+    try {
+      const method = editingId ? 'PUT' : 'POST';
+      const url = editingId ? `/api/users/${editingId}` : '/api/users';
+      
+      const payload = {
+        username: userForm.username,
+        name: userForm.name,
+        role: userForm.role,
+        securityQuestion: userForm.securityQuestion
+      };
+      if (userForm.password) payload.password = userForm.password;
+      if (userForm.securityAnswer) payload.securityAnswer = userForm.securityAnswer;
+
+      if (!editingId && (!userForm.password || !userForm.securityAnswer)) {
+        throw new Error('కొత్త యూజర్ కోసం పాస్‌వర్డ్ మరియు సెక్యూరిటీ సమాధానం తప్పనిసరి!');
+      }
+
+      const res = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.error || 'User action failed');
+      }
+
+      setUploadProgress('✓ విజయవంతంగా సేవ్ చేయబడింది!');
+      setTimeout(() => {
+        setModalType(null);
+        setEditingId(null);
+        setUserForm({
+          username: '', password: '', name: '', role: 'Editor',
+          securityQuestion: 'మీ మొదటి పాఠశాల పేరు?', securityAnswer: ''
+        });
+        loadData();
+      }, 1000);
+    } catch (err) {
+      setUploadProgress('✕ విఫలమైంది: ' + err.message);
+    }
+  };
+
   if (!user) return null;
 
   // Filter categories
@@ -462,7 +557,10 @@ export default function AdminDashboard({ user }) {
           )}
 
           {user.role === 'Super Admin' && (
-            <li className={`admin-nav-item ${activeTab === 'backups' ? 'active' : ''}`} onClick={() => setActiveTab('backups')}>💾 బ్యాకప్‌లు & లాగ్స్ (System)</li>
+            <>
+              <li className={`admin-nav-item ${activeTab === 'users' ? 'active' : ''}`} onClick={() => setActiveTab('users')}>👥 యూజర్ల నిర్వహణ (Users)</li>
+              <li className={`admin-nav-item ${activeTab === 'backups' ? 'active' : ''}`} onClick={() => setActiveTab('backups')}>💾 బ్యాకప్‌లు & లాగ్స్ (System)</li>
+            </>
           )}
         </ul>
 
@@ -481,6 +579,7 @@ export default function AdminDashboard({ user }) {
              activeTab === 'breaking' ? 'బ్రేకింగ్ న్యూస్ నివేదికల ప్యానెల్' :
              activeTab === 'epaper' ? 'ఇ-పేపర్ పబ్లిషింగ్ ప్యానెల్' :
              activeTab === 'ads' ? 'ప్రకటన ప్రచారాల ప్యానెల్' :
+             activeTab === 'users' ? 'వినియోగదారుల నిర్వహణ ప్యానెల్' :
              activeTab === 'backups' ? 'వ్యవస్థ భద్రత & బ్యాకప్ ప్యానెల్' : ''}
           </h1>
           <span style={{ fontSize: '14px', color: 'var(--text-muted)' }}>లాగిన్ యూజర్: <b>{user.name}</b></span>
@@ -857,6 +956,67 @@ export default function AdminDashboard({ user }) {
                   </ul>
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* ================= 8. USER MANAGEMENT PANEL ================= */}
+        {activeTab === 'users' && user.role === 'Super Admin' && (
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+              <h2 style={{ fontSize: '18px', fontWeight: 'bold' }}>వినియోగదారుల ఖాతాలు</h2>
+              <button 
+                onClick={() => {
+                  setEditingId(null);
+                  setUserForm({
+                    username: '', password: '', name: '', role: 'Editor',
+                    securityQuestion: 'మీ మొదటి పాఠశాల పేరు?', securityAnswer: ''
+                  });
+                  setModalType('user');
+                  setUploadProgress('');
+                }} 
+                className="btn btn-primary"
+              >
+                ➕ కొత్త యూజర్ ని సృష్టించండి
+              </button>
+            </div>
+
+            <div style={{ backgroundColor: 'var(--bg-card)', padding: '20px', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-light)' }}>
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>యూజర్ పేరు</th>
+                    <th>నిజమైన పేరు</th>
+                    <th>రోల్ (పాత్ర)</th>
+                    <th>సెక్యూరిటీ ప్రశ్న</th>
+                    <th>చర్యలు</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {usersList.map(u => (
+                    <tr key={u.id}>
+                      <td><b>#{u.id}</b></td>
+                      <td><code>{u.username}</code></td>
+                      <td>{u.name}</td>
+                      <td>
+                        <span className={`badge ${u.role === 'Super Admin' ? 'badge-danger' : u.role === 'Editor' ? 'badge-primary' : 'badge-secondary'}`}>
+                          {u.role}
+                        </span>
+                      </td>
+                      <td style={{ fontSize: '12px' }}>{u.securityQuestion}</td>
+                      <td>
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                          <button onClick={() => handleEditUser(u)} className="btn btn-secondary" style={{ padding: '4px 8px', fontSize: '12px' }}>సవరించు</button>
+                          {u.id !== user.id && (
+                            <button onClick={() => handleDeleteUser(u.id)} className="btn btn-danger" style={{ padding: '4px 8px', fontSize: '12px' }}>తొలగించు</button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         )}
@@ -1309,6 +1469,95 @@ export default function AdminDashboard({ user }) {
                 <button type="button" className="btn btn-muted" onClick={() => setModalType(null)}>రద్దు</button>
                 <button type="button" className="btn btn-secondary" onClick={handleRestoreBackupSubmit}>రీస్టోర్ చేయండి</button>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* 7. User Account Add/Edit Modal */}
+        {modalType === 'user' && (
+          <div className="modal-overlay">
+            <div className="modal-content" style={{ maxWidth: '500px' }}>
+              <button className="modal-close" onClick={() => setModalType(null)}>×</button>
+              <h3 style={{ marginBottom: '20px', fontWeight: 'bold' }}>
+                {editingId ? 'యూజర్ వివరాల సవరణ' : 'కొత్త ఎడిటోరియల్ యూజర్ సృష్టి'}
+              </h3>
+
+              <form onSubmit={handleUserSubmit}>
+                <div className="form-group">
+                  <label>పూర్తి పేరు (Real Name) *</label>
+                  <input 
+                    type="text" required className="form-control"
+                    value={userForm.name}
+                    onChange={e => setUserForm({...userForm, name: e.target.value})}
+                    placeholder="ఉదాహరణ: రాంబాబు రావు"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>యూజర్ పేరు (Username) *</label>
+                  <input 
+                    type="text" required className="form-control"
+                    disabled={!!editingId}
+                    value={userForm.username}
+                    onChange={e => setUserForm({...userForm, username: e.target.value})}
+                    placeholder="లాగిన్ కోసం ఐడీ (ఇంగ్లీష్ అక్షరాలలో)"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>లాగిన్ పాస్‌వర్డ్ (Password) {editingId ? '(మార్చాలనుకుంటేనే టైప్ చేయండి)' : '*'}</label>
+                  <input 
+                    type="password" required={!editingId} className="form-control"
+                    value={userForm.password}
+                    onChange={e => setUserForm({...userForm, password: e.target.value})}
+                    placeholder="గోప్యంగా ఉంచవలసిన పాస్‌వర్డ్"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>రోల్ (Role/Role Authority) *</label>
+                  <select 
+                    className="form-control" required
+                    value={userForm.role}
+                    onChange={e => setUserForm({...userForm, role: e.target.value})}
+                  >
+                    <option value="Super Admin">Super Admin (పూర్తి అధికారాలు)</option>
+                    <option value="Editor">Editor (వార్తల ప్రచురణ & వర్గాలు)</option>
+                    <option value="Reporter">Reporter (రిపోర్ట్ డ్రాఫ్ట్‌లు రాయడం)</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label>సెక్యూరిటీ ప్రశ్న (Security Question for Reset) *</label>
+                  <input 
+                    type="text" required className="form-control"
+                    value={userForm.securityQuestion}
+                    onChange={e => setUserForm({...userForm, securityQuestion: e.target.value})}
+                    placeholder="పాస్‌వర్డ్ మర్చిపోతే రీసెట్ చేయడానికి అడిగే ప్రశ్న"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>సెక్యూరిటీ సమాధానం (Security Answer) {editingId ? '(మార్చాలనుకుంటేనే టైప్ చేయండి)' : '*'}</label>
+                  <input 
+                    type="text" required={!editingId} className="form-control"
+                    value={userForm.securityAnswer}
+                    onChange={e => setUserForm({...userForm, securityAnswer: e.target.value})}
+                    placeholder="సమాధానం టైప్ చేయండి (కీ-సెన్సిటివ్ కాదు)"
+                  />
+                </div>
+
+                {uploadProgress && (
+                  <div style={{ backgroundColor: 'var(--bg-light)', padding: '12px', borderRadius: 'var(--radius-sm)', fontSize: '13px', marginBottom: '16px', fontWeight: '600' }}>
+                    {uploadProgress}
+                  </div>
+                )}
+
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '24px' }}>
+                  <button type="button" className="btn btn-muted" onClick={() => setModalType(null)}>రద్దు</button>
+                  <button type="submit" className="btn btn-primary">సేవ్ చేయండి</button>
+                </div>
+              </form>
             </div>
           </div>
         )}
